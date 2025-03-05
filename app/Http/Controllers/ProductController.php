@@ -155,6 +155,15 @@ class ProductController extends Controller
 
         $currency = Currency::find($currency_id);
 
+        if (!$currency) {
+            $response = [
+                'success' => false,
+                'data' => 'Empty',
+                'message' => 'Divisa no encontrada'
+            ];
+            return response()->json($response, 404);
+        }
+
         $product->currencies()->attach($currency->id, ['price' => $product->price * $currency->exchange_rate]);
 
         $response = [
